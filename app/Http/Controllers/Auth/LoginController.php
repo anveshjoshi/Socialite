@@ -45,9 +45,9 @@ class LoginController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function redirectToProvider($provider)
+    public function redirectToGithub()
     {
-        return Socialite::driver($provider)->redirect();
+        return Socialite::driver('github')->redirect();
     }
 
     /**
@@ -55,24 +55,93 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function handleProviderCallback($provider)
+    public function handleGithubCallback()
     {
-        $socialUser = Socialite::driver($provider)->user();
+        $githubUser = Socialite::driver('github')->user();
 
         //add user to db
 
-        $user = User::where('provider_id', $socialUser->getId())->first();
+        $user = User::where('provider_id', $githubUser->getId())->first();
 
         if (!$user) {
         $user = User::create([
-            'name' => $socialUser->getNickName(),
-            'email' => $socialUser->getEmail(),
-            'provider_id' => $socialUser->getId(),
-            'provider' => $provider,
+            'name' => $githubUser->getNickName(),
+            'email' => $githubUser->getEmail(),
+            'provider_id' => $githubUser->getId(),
+            'provider' => 'github',
         ]);
     }
 
         //remember me
+
+        Auth::login($user, true);
+
+        return redirect($this->redirectTo);
+    }
+
+    public function redirectToFacebook()
+    {
+        return Socialite::driver('facebook')->redirect();
+    }
+
+    /**
+     * Obtain the user information from GitHub.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function handleFacebookCallback()
+    {
+        $facebookUser = Socialite::driver('facebook')->user();
+
+        //add user to db
+
+        $user = User::where('provider_id', $facebookUser->getId())->first();
+
+        if (!$user) {
+            $user = User::create([
+                'name' => $facebookUser->getNickName(),
+                'email' => $facebookUser->getEmail(),
+                'provider_id' => $facebookUser->getId(),
+                'provider' => 'facebook',
+            ]);
+        }
+
+        //remember me
+
+        Auth::login($user, true);
+
+        return redirect($this->redirectTo);
+    }
+
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    /**
+     * Obtain the user information from GitHub.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function handleGoogleCallback()
+    {
+        $googleUser = Socialite::driver('google')->user();
+
+        //add user to db
+
+        $user = User::where('provider_id', $googleUser->getId())->first();
+
+        if (!$user) {
+            $user = User::create([
+                'name' => $googleUser->getName(),
+                'email' => $googleUser->getEmail(),
+                'provider_id' => $googleUser->getId(),
+                'provider' => 'google',
+            ]);
+        }
+
+        //remember me
+
         Auth::login($user, true);
 
         return redirect($this->redirectTo);
