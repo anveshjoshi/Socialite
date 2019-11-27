@@ -64,20 +64,21 @@
                             @endif
                             </div>
                         </div>
+                        <hr>
+                        <div class="social_logins" style="text-align: center">
+                            <h1>Log in with </h1>
+                            <a class="btn btn-link" href="{{ url('/login/github') }}">
+                                <i class="fa fa-github fa-3x" style="color: #444444; align-content: center"></i>
+                            </a>
 
-                                <a href="{{ url('/login/github') }}" class="btn btn-primary">
-                                   Login with Github
-                                </a>
+                            <a class="btn btn-link" href="{{ url('/login/facebook') }}">
+                                <i class="fa fa-facebook fa-3x" style="color: #3B5998"></i>
+                            </a>
 
-
-                                <a href="{{ url('/login/facebook') }}" class="btn btn-primary">
-                                    Login with Facebook
-                                </a>
-
-                                <a href="{{ url('/login/google') }}" class="btn btn-primary">
-                                    Login with Google
-                                </a>
-
+                            <a class="btn btn-link" href="{{ url('/login/google') }}">
+                                <i class="fa fa-google fa-3x" style="color: #DD4B39"></i>
+                            </a>
+                        </div>
                         </div>
                     </form>
                 </div>
